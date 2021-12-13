@@ -2,8 +2,6 @@ const express = require('express');
 const router = express.Router();
 const usersModel = require("./MongoDB");
 
-const formatDate = (date) => new Date(`${date} 00:00:00`).toDateString();
-
 router.get("/", async function (req, res) {
     let response = await usersModel.find();
     let users = response.map(user => ({_id: user._id, username: user.username}));
@@ -49,7 +47,7 @@ router.post("/:_id/exercises", exercisesMiddleWare, async function (req, res) {
     }
 
     res.json({
-        _id, username, ...exercise, "date": formatDate(exercise.date)
+        _id, username, ...exercise, "date": new Date(`${exercise.date} 00:00:00`).toDateString()
     });
 });
 
@@ -76,7 +74,7 @@ const queryUserExercises = function ({from, to, limit}, [...exercises]) {
     }
 
     return exercises.map(({duration, description, date}) => ({
-        duration, description, "date": formatDate(date)
+        duration, description, "date": new Date(date).toDateString()
     }));
 }
 
