@@ -74,7 +74,7 @@ const queryUserExercises = function ({from, to, limit}, [...exercises]) {
     }
 
     return exercises.map(({duration, description, date}) => ({
-        duration, description, "date": new Date(date).toDateString()
+        duration, description, "date": new Date(`${date} 00:00:00`).toDateString()
     }));
 }
 
